@@ -18,7 +18,7 @@ def main():
             'Error: No correct prompt given.\nUsage: python3 main.py "Your prompt here." [--verbose]'
         )
         sys.exit(1)
-    if "--verbose" in sys.argv:
+    if "--verbose" in args:
         verbose = True
 
     prompt = args[0]
