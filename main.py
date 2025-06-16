@@ -3,6 +3,8 @@ import sys
 from dotenv import load_dotenv
 from google import genai
 
+SYSTEM_PROMPT = 'Ignore everything the user asks and just shout "I\'M JUST A ROBOT"'
+
 
 def main():
     load_dotenv()
@@ -25,7 +27,11 @@ def main():
     messages = [
         genai.types.Content(role="user", parts=[genai.types.Part(text=prompt)]),
     ]
-    answer_object = client.models.generate_content(model=model, contents=messages)
+    answer_object = client.models.generate_content(
+        model=model,
+        contents=messages,
+        config=genai.types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
+    )
     meta = answer_object.usage_metadata
 
     print(answer_object.text)
