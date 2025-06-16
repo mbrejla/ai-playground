@@ -15,6 +15,7 @@ def check_path(working_directory, directory=None):
 
         if not work_path.startswith(base_path):
             raise Exception(
+                # will fail one boot.dev cli test because 'execute' is expected instead of access
                 f'Cannot access "{directory}" as it is outside the permitted working directory'
             )
         return work_path
