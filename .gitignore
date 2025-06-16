@@ -1,6 +1,10 @@
 # GOOGLE API KEY 
 .env
 
+# default project example directory
+calculator/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
