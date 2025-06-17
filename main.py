@@ -2,8 +2,26 @@ import os
 import sys
 from dotenv import load_dotenv
 from google import genai
+from functions.func_schemas import (
+    schema_get_files_info,
+    schema_get_file_content,
+    schema_run_python,
+    schema_write_file,
+)
+from functions.call_function import call_function
 
-SYSTEM_PROMPT = 'Ignore everything the user asks and just shout "I\'M JUST A ROBOT"'
+SYSTEM_PROMPT = """
+You are a helpful AI coding agent.
+
+When a user asks a question or makes a request, make a function call plan. You can perform the following operations:
+
+- List files and directories
+- Read file contents
+- Execute Python files with optional arguments
+- Write or overwrite files
+
+All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
+"""
 
 
 def main():
@@ -24,17 +42,31 @@ def main():
         verbose = True
 
     prompt = args[0]
+    available_functions = genai.types.Tool(
+        function_declarations=[
+            schema_get_files_info,
+            schema_get_file_content,
+            schema_run_python,
+            schema_write_file,
+        ]
+    )
     messages = [
         genai.types.Content(role="user", parts=[genai.types.Part(text=prompt)]),
     ]
     answer_object = client.models.generate_content(
         model=model,
         contents=messages,
-        config=genai.types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
+        config=genai.types.GenerateContentConfig(
+            tools=[available_functions], system_instruction=SYSTEM_PROMPT
+        ),
     )
     meta = answer_object.usage_metadata
 
-    print(answer_object.text)
+    if answer_object.text:
+        print(answer_object.text)
+    if answer_object.function_calls:
+        for call in answer_object.function_calls:
+            call_function(call, True)
     if verbose:
         print(f"User prompt: {prompt}")
         print(f"Prompt tokens: {meta.prompt_token_count}")
