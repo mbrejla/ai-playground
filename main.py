@@ -66,7 +66,7 @@ def main():
         print(answer_object.text)
     if answer_object.function_calls:
         for call in answer_object.function_calls:
-            call_function(call, True)
+            call_function(call, verbose)
     if verbose:
         print(f"User prompt: {prompt}")
         print(f"Prompt tokens: {meta.prompt_token_count}")
