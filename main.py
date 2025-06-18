@@ -66,7 +66,10 @@ def main():
         print(answer_object.text)
     if answer_object.function_calls:
         for call in answer_object.function_calls:
-            call_function(call, verbose)
+            result = call_function(call, verbose)
+            if not result.parts[0].function_response.response:
+                raise Exception(f"FATAL!: Call to {call} didn't return a result.")
+            print(f"-> {result.parts[0].function_response.response}")
     if verbose:
         print(f"User prompt: {prompt}")
         print(f"Prompt tokens: {meta.prompt_token_count}")
