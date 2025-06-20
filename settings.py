@@ -1,6 +1,6 @@
 WORKING_DIRECTORY = "./calculator"
 MAX_TRIES = 20
-
+MAX_BYTES = 10000
 SYSTEM_PROMPT = """
 You are a helpful AI coding agent.
 

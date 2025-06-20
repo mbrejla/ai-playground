@@ -3,8 +3,6 @@ from os import path
 
 from functions.check_path import check_path
 
-MAX_BYTES = 10000
-
 
 def write_file(working_directory, file_path, content):
     try:

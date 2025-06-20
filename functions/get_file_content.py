@@ -2,20 +2,11 @@ import os
 from os import path
 
 from functions.check_path import check_path
-
-MAX_BYTES = 10000
+from settings import MAX_BYTES
 
 
 def get_file_content(working_directory, file_path):
     try:
-        # if not path.isdir(working_directory):
-        #     return f'Error: "{working_directory}" is not a valid directory'
-        #
-        # base_path_abs = path.abspath(working_directory)
-        # file_path_abs = path.abspath(path.join(base_path_abs, file_path))
-        #
-        # if not file_path_abs.startswith(base_path_abs):
-        #     return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
         file_path_abs = check_path(working_directory, file_path)
 
         if not path.isfile(file_path_abs):
