@@ -33,7 +33,7 @@ def get_files_info(working_directory, directory=None):
 
             content_string += f"- {entry}: file_size={size}, is_dir={is_dir}\n"
 
-        print(work_path)
+        # print(work_path)
         return content_string
     except Exception as e:
         return f"Error: {e}"
